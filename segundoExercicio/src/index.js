@@ -7,9 +7,19 @@ fs.readFile(caminhoArquivo, 'utf8', (erro, texto) => {
     console.error(erro);
     return;
   }
-  verificaPalavrasDuplicadas(texto);
+  separaParagrafos(texto)
 });
 
+function separaParagrafos(texto) {
+  const paragrafos = texto.toLowerCase().split('\n');
+  const contagem = paragrafos.map((paragrafo) => {
+    return verificaPalavrasDuplicadas(paragrafo);
+  })
+
+  console.log(contagem);
+}
+ 
+ 
 function verificaPalavrasDuplicadas(texto) {
   const listaPalavras = texto.split(' ');
   const resultado = {};
@@ -20,5 +30,5 @@ function verificaPalavrasDuplicadas(texto) {
       resultado[palavra] = 1;
     }
   });
-  console.log(resultado)
+  return resultado;
 }
