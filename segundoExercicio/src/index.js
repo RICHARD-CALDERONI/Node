@@ -7,17 +7,17 @@ fs.readFile(caminhoArquivo, 'utf8', (erro, texto) => {
     console.error(erro);
     return;
   }
-  separaParagrafos(texto)
-});
+  separaParagrafos(texto);
+})
 
 function separaParagrafos(texto) {
   const paragrafos = texto.toLowerCase().split('\n');
   const contagem = paragrafos
-    .filter((paragrafo) => paragrafo)
-    .map((paragrafo) => {
-    return verificaPalavrasDuplicadas(paragrafo);
-  })
-
+    .flatMap((paragrafo) => {
+      if (!paragrafo) return [];
+      return verificaPalavrasDuplicadas(paragrafo);
+      
+    })
   console.log(contagem);
 }
 
@@ -32,11 +32,7 @@ function verificaPalavrasDuplicadas(texto) {
   listaPalavras.forEach(palavra => {
     if (palavra.length >= 3) {
       const palavraLimpa = limpaPalavras(palavra);
-      if (resultado[palavraLimpa]) {
-        resultado[palavraLimpa]++;
-      } else {
-        resultado[palavraLimpa] = 1;
-      }
+      resultado[palavraLimpa] = (resultado[palavraLimpa] || 0) + 1;
     }
   });
   return resultado;
