@@ -3,23 +3,33 @@ const fs = require('fs');
 const caminhoArquivo = process.argv[2];
 
 fs.readFile(caminhoArquivo, 'utf8', (erro, texto) => {
-  if (erro) {
-    console.error(erro);
-    return;
+  try {
+    
+     contaPalavras(texto);
+
+  } catch (error) {
+    if (erro) 
+      console.error(erro);
+      return;
   }
-  separaParagrafos(texto);
+  
 })
 
-function separaParagrafos(texto) {
-  const paragrafos = texto.toLowerCase().split('\n');
-  const contagem = paragrafos
-    .flatMap((paragrafo) => {
-      if (!paragrafo) return [];
-      return verificaPalavrasDuplicadas(paragrafo);
-      
-    })
-  console.log(contagem);
+function contaPalavras(texto) {
+    const paragrafos = extraiParagrafos(texto);
+    const contagem = paragrafos
+      .flatMap((paragrafo) => {
+        if (!paragrafo) return [];
+        return verificaPalavrasDuplicadas(paragrafo);
+        
+      })
+    console.log(contagem);
+  }
+
+function extraiParagrafos(texto) {
+  return texto.toLowerCase().split('\n');
 }
+
 
 function limpaPalavras(palavra) {
   return palavra.replace(/[\r.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
